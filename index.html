@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111027">
+  <meta name="description" content="A tiny, dreamy surprise made just for Khushi Mishra.">
+  <title>A little surprise for Khushi ✨</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #111027;
+      --ink: #fff8fb;
+      --muted: #d7c9df;
+      --pink: #ff9fc6;
+      --rose: #f5b8a8;
+      --lavender: #c9a9ff;
+      --glass: rgba(31, 25, 58, .68);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { min-width: 320px; min-height: 100%; background: var(--night); }
+
+    body {
+      min-height: 100svh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      background:
+        radial-gradient(ellipse at 50% 112%, rgba(112, 65, 130, .44), transparent 49%),
+        radial-gradient(ellipse at 12% 12%, rgba(76, 67, 127, .34), transparent 35%),
+        radial-gradient(ellipse at 90% 20%, rgba(111, 51, 102, .23), transparent 34%),
+        linear-gradient(160deg, #111027 0%, #17132f 52%, #251630 100%);
+    }
+
+    body::before {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      opacity: .33;
+      background-image:
+        radial-gradient(1px 1px at 9% 21%, #fff 98%, transparent),
+        radial-gradient(1px 1px at 21% 67%, #f8cee4 98%, transparent),
+        radial-gradient(1.5px 1.5px at 34% 14%, #fff 98%, transparent),
+        radial-gradient(1px 1px at 48% 79%, #fff 98%, transparent),
+        radial-gradient(1px 1px at 65% 32%, #f8cee4 98%, transparent),
+        radial-gradient(1.5px 1.5px at 77% 62%, #fff 98%, transparent),
+        radial-gradient(1px 1px at 92% 11%, #fff 98%, transparent);
+      background-size: 260px 230px;
+      animation: star-drift 45s linear infinite;
+    }
+
+    button { font: inherit; }
+
+    .sky, .ambient, .scene-wrap, .progress, .sound-toggle {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sky {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: var(--size, 2px);
+      height: var(--size, 2px);
+      border-radius: 50%;
+      background: #fff8f6;
+      box-shadow: 0 0 9px 2px rgba(255, 211, 238, .55);
+      animation: twinkle var(--duration, 3s) ease-in-out infinite alternate;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .floaty {
+      position: absolute;
+      bottom: -40px;
+      font-size: var(--size, 17px);
+      opacity: 0;
+      animation: float-up var(--duration, 8s) ease-in infinite;
+      animation-delay: var(--delay, 0s);
+      filter: drop-shadow(0 0 9px rgba(255, 159, 198, .5));
+    }
+
+    .scene-wrap {
+      display: grid;
+      min-height: 100svh;
+      place-items: center;
+      padding: 76px 20px 60px;
+    }
+
+    .scene {
+      width: min(100%, 660px);
+      padding: clamp(28px, 7vw, 64px);
+      border: 1px solid rgba(255, 221, 240, .17);
+      border-radius: 28px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 180, 219, .09), transparent 55%),
+        var(--glass);
+      box-shadow: 0 28px 100px rgba(4, 3, 20, .42), inset 0 1px rgba(255, 255, 255, .08);
+      backdrop-filter: blur(16px);
+      text-align: center;
+      animation: scene-in .75s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    .scene.shake { animation: shake .48s ease-in-out; }
+
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1, h2 {
+      text-wrap: balance;
+      font-weight: 400;
+      line-height: 1.16;
+    }
+
+    h1 { margin-bottom: 18px; font-size: clamp(2.3rem, 8vw, 4.3rem); }
+    h2 { margin-bottom: 18px; font-size: clamp(1.8rem, 6vw, 3rem); }
+
+    .lead {
+      margin: 0 auto 30px;
+      max-width: 44ch;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 3.4vw, 1.32rem);
+      line-height: 1.8;
+      text-wrap: pretty;
+    }
+
+    .name-glow {
+      color: #ffe0ef;
+      text-shadow: 0 0 24px rgba(255, 154, 202, .38);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      min-height: 50px;
+      padding: 13px 23px;
+      border: 1px solid rgba(255, 222, 240, .28);
+      border-radius: 999px;
+      color: #fff8fc;
+      background: rgba(255, 255, 255, .07);
+      cursor: pointer;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .button:hover, .button:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(255, 213, 235, .7);
+      background: rgba(255, 255, 255, .13);
+      box-shadow: 0 9px 28px rgba(13, 7, 34, .32);
+    }
+
+    .button:focus-visible { outline: 2px solid #ffd6e9; outline-offset: 4px; }
+
+    .button.primary {
+      border-color: rgba(255, 221, 241, .64);
+      color: #321830;
+      background: linear-gradient(120deg, #ffd4e6, #f6bdc7 52%, #ead4ff);
+      box-shadow: 0 0 28px rgba(240, 154, 207, .22);
+      font-weight: 700;
+    }
+
+    .button.primary:hover, .button.primary:focus-visible {
+      background: linear-gradient(120deg, #ffe4ef, #ffd2d8 52%, #f0e2ff);
+      box-shadow: 0 0 35px rgba(240, 154, 207, .4);
+    }
+
+    .button.yes {
+      min-width: 154px;
+      min-height: 58px;
+      font-size: 1.12rem;
+      animation: gentle-pulse 2.4s ease-in-out infinite;
+    }
+
+    .progress {
+      position: fixed;
+      top: 23px;
+      left: 50%;
+      display: flex;
+      gap: 8px;
+      transform: translateX(-50%);
+    }
+
+    .progress-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .2);
+      transition: all .35s ease;
+    }
+
+    .progress-dot.active {
+      width: 20px;
+      border-radius: 9px;
+      background: linear-gradient(90deg, var(--pink), var(--lavender));
+      box-shadow: 0 0 12px rgba(255, 159, 198, .56);
+    }
+
+    .sound-toggle {
+      position: fixed;
+      top: 14px;
+      right: 15px;
+      min-height: 40px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(25, 19, 48, .55);
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      font-size: .78rem;
+    }
+
+    .twist-number {
+      display: inline-grid;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 20px;
+      place-items: center;
+      border: 1px solid rgba(255, 203, 229, .35);
+      border-radius: 50%;
+      color: #ffe0ee;
+      background: rgba(255, 190, 222, .09);
+      box-shadow: 0 0 24px rgba(255, 160, 205, .13);
+      font-size: 1.2rem;
+    }
+
+    .letter {
+      position: relative;
+      padding: clamp(24px, 6vw, 42px);
+      border: 1px solid rgba(243, 206, 174, .4);
+      border-radius: 7px 21px 8px 19px;
+      color: #4a2c43;
+      background: linear-gradient(145deg, #fff0e7, #f8dce9 78%, #f0dff4);
+      box-shadow: 0 14px 50px rgba(7, 3, 18, .24);
+      text-align: left;
+      transform-origin: top center;
+    }
+
+    .letter.opened { animation: letter-open .9s cubic-bezier(.2, .8, .2, 1) both; }
+
+    .letter::before {
+      position: absolute;
+      top: -17px;
+      left: calc(50% - 17px);
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(255, 229, 209, .7);
+      border-radius: 50%;
+      color: #fff0ec;
+      background: linear-gradient(145deg, #b44f72, #7f344f);
+      box-shadow: 0 4px 13px rgba(80, 25, 49, .28);
+      content: "♥";
+      font-size: .84rem;
+    }
+
+    .letter p { margin: 0 0 15px; line-height: 1.85; }
+    .letter p:last-child { margin-bottom: 0; }
+    .letter-sign { color: #9d5870; font-size: 1.17rem; }
+
+    .envelope {
+      position: relative;
+      display: grid;
+      width: min(100%, 350px);
+      height: 128px;
+      margin: 28px auto 34px;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(243, 206, 174, .45);
+      border-radius: 12px;
+      color: #a95d7a;
+      background: linear-gradient(145deg, #f9e7ee, #eed9f2);
+      box-shadow: 0 14px 50px rgba(7, 3, 18, .24);
+      font-size: 2.25rem;
+    }
+
+    .envelope::before, .envelope::after {
+      position: absolute;
+      right: -1px;
+      bottom: -44px;
+      left: -1px;
+      height: 94px;
+      border: 1px solid rgba(184, 128, 157, .25);
+      background: rgba(255, 246, 249, .45);
+      content: "";
+      transform: rotate(24deg) scaleX(1.15);
+    }
+
+    .envelope::after { transform: rotate(-24deg) scaleX(1.15); }
+
+    .envelope span {
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 2px 9px rgba(169, 93, 122, .23));
+    }
+
+    .moon {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 26px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 37% 33%, #fff8e6, #ffd9d2 57%, #e7b7e7);
+      box-shadow: 0 0 22px 5px rgba(255, 220, 224, .22), 0 0 75px 17px rgba(212, 167, 246, .14);
+      animation: moon-glow 4s ease-in-out infinite alternate;
+    }
+
+    .moon::after {
+      position: absolute;
+      top: 8px;
+      left: 50px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #211832;
+      content: "";
+    }
+
+    .story-line {
+      min-height: 2.3em;
+      margin: 17px auto;
+      color: #f7e7f2;
+      font-size: clamp(1.12rem, 4vw, 1.55rem);
+      line-height: 1.55;
+      animation: line-in .7s ease both;
+    }
+
+    .question-screen {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(255, 213, 237, .28);
+      background:
+        radial-gradient(ellipse at 50% 10%, rgba(255, 156, 204, .19), transparent 47%),
+        radial-gradient(ellipse at 100% 100%, rgba(170, 125, 255, .17), transparent 45%),
+        rgba(37, 24, 60, .77);
+      box-shadow: 0 0 100px rgba(192, 114, 201, .13), 0 28px 100px rgba(4, 3, 20, .42);
+    }
+
+    .question-screen h1 {
+      margin: 30px auto 18px;
+      color: #ffe8f5;
+      text-shadow: 0 0 30px rgba(255, 159, 198, .43);
+    }
+
+    .cinematic-line { opacity: 0; animation: reveal .9s ease forwards; }
+    .cinematic-line.delay-one { animation-delay: .55s; }
+    .cinematic-line.delay-two { animation-delay: 1.35s; }
+    .cinematic-line.delay-three { animation-delay: 2.2s; }
+    .question-buttons { opacity: 0; animation: reveal .8s ease 3s forwards; }
+
+    .celebrate-title {
+      color: #ffe0ef;
+      text-shadow: 0 0 32px rgba(255, 139, 197, .55);
+    }
+
+    .choice {
+      min-width: 145px;
+      border-color: rgba(255, 212, 235, .23);
+      color: #f8e8f4;
+      background: rgba(255, 255, 255, .065);
+    }
+
+    .choice.selected {
+      border-color: #ffd6e8;
+      color: #382039;
+      background: linear-gradient(120deg, #ffd4e6, #ead4ff);
+      box-shadow: 0 0 22px rgba(255, 159, 198, .24);
+    }
+
+    .choice-note {
+      min-height: 1.6em;
+      margin: 19px 0 0;
+      color: #f5d9e9;
+      font-style: italic;
+    }
+
+    .footer-note {
+      position: fixed;
+      z-index: 1;
+      right: 15px;
+      bottom: 12px;
+      left: 15px;
+      color: rgba(235, 220, 237, .57);
+      font-family: system-ui, sans-serif;
+      font-size: .68rem;
+      letter-spacing: .04em;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: fixed;
+      z-index: 5;
+      left: var(--x);
+      top: var(--y);
+      color: var(--color, #ffc2df);
+      font-size: var(--size, 19px);
+      pointer-events: none;
+      text-shadow: 0 0 12px currentColor;
+      animation: burst var(--duration, 1.5s) ease-out forwards;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes twinkle { from { opacity: .25; transform: scale(.75); } to { opacity: 1; transform: scale(1.3); } }
+    @keyframes star-drift { to { background-position: 260px 230px; } }
+    @keyframes float-up {
+      0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(-12deg) scale(.75); }
+      15% { opacity: .65; }
+      85% { opacity: .48; }
+      100% { opacity: 0; transform: translate3d(var(--drift, 25px), -110vh, 0) rotate(25deg) scale(1.15); }
+    }
+    @keyframes scene-in { from { opacity: 0; transform: translateY(16px) scale(.985); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes line-in { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes letter-open { from { opacity: 0; transform: perspective(700px) rotateX(16deg) translateY(15px); } to { opacity: 1; transform: perspective(700px) rotateX(0) translateY(0); } }
+    @keyframes reveal { to { opacity: 1; } }
+    @keyframes shake { 20%, 60% { transform: translateX(-7px) rotate(-.4deg); } 40%, 80% { transform: translateX(7px) rotate(.4deg); } }
+    @keyframes moon-glow { to { box-shadow: 0 0 35px 9px rgba(255, 220, 224, .33), 0 0 90px 25px rgba(212, 167, 246, .2); } }
+    @keyframes gentle-pulse { 50% { box-shadow: 0 0 39px rgba(240, 154, 207, .42); } }
+    @keyframes burst { to { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--spin, 180deg)) scale(.25); } }
+
+    @media (max-width: 480px) {
+      .scene-wrap { padding: 68px 14px 58px; }
+      .scene { border-radius: 22px; }
+      .progress { top: 23px; }
+      .button-row { gap: 10px; }
+      .button { min-height: 48px; padding: 12px 17px; }
+      .button-row .button { max-width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        animation-delay: 0s !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sky" id="sky" aria-hidden="true"></div>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+  <nav class="progress" id="progress" aria-label="Surprise story progress"></nav>
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false" title="Toggle gentle background music">♫ Sound off</button>
+  <main class="scene-wrap">
+    <section class="scene" id="scene" aria-live="polite" aria-atomic="true"></section>
+  </main>
+  <p class="footer-note">A little corner of the universe, made just for you ✨</p>
+  <div class="sr-only" id="announcement" aria-live="assertive"></div>
+
+  <script>
+    const sceneElement = document.getElementById("scene");
+    const progressElement = document.getElementById("progress");
+    const ambientElement = document.getElementById("ambient");
+    const announcement = document.getElementById("announcement");
+    const storySteps = ["beginning", "suspense", "twists", "letter", "build-up", "question"];
+    let scene = "beginning";
+    let twist = 0;
+    let soundOn = false;
+    let audioContext;
+    let melodyTimer;
+
+    const twists = [
+      "You're the reason behind someone's random smiles. 😊",
+      "Someone has been planning this little surprise just for you. 🌷",
+      "This website isn't really about technology… it's about YOU. 💖",
+      "There's one question that someone has been wanting to ask you…"
+    ];
+
+    function makeStars() {
+      const sky = document.getElementById("sky");
+      for (let i = 0; i < 68; i++) {
+        const star = document.createElement("i");
+        star.className = "star";
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.setProperty("--size", `${Math.random() * 2 + 1}px`);
+        star.style.setProperty("--duration", `${Math.random() * 3 + 2}s`);
+        star.style.setProperty("--delay", `${Math.random() * -4}s`);
+        sky.append(star);
+      }
+    }
+
+    function updateProgress() {
+      progressElement.replaceChildren();
+      const active = storySteps.indexOf(scene);
+      storySteps.forEach((_, index) => {
+        const dot = document.createElement("span");
+        dot.className = `progress-dot${index <= active ? " active" : ""}`;
+        progressElement.append(dot);
+      });
+      progressElement.setAttribute("aria-label", `Surprise story, scene ${active + 1} of ${storySteps.length}`);
+    }
+
+    function render(markup, options = {}) {
+      sceneElement.classList.remove("shake");
+      sceneElement.innerHTML = markup;
+      sceneElement.className = `scene${options.className ? ` ${options.className}` : ""}`;
+      scene = options.scene || scene;
+      updateProgress();
+      if (options.announce) announcement.textContent = options.announce;
+      if (options.hearts) hearts(options.hearts, options.heartSymbols);
+    }
+
+    function hearts(count = 16, extras = ["♡", "♥", "✧", "🌷"]) {
+      for (let i = 0; i < count; i++) {
+        const item = document.createElement("span");
+        item.className = "floaty";
+        item.textContent = extras[Math.floor(Math.random() * extras.length)];
+        item.style.left = `${Math.random() * 100}%`;
+        item.style.setProperty("--size", `${Math.random() * 16 + 12}px`);
+        item.style.setProperty("--duration", `${Math.random() * 5 + 6}s`);
+        item.style.setProperty("--delay", `${Math.random() * 3}s`);
+        item.style.setProperty("--drift", `${Math.random() * 100 - 50}px`);
+        ambientElement.append(item);
+        window.setTimeout(() => item.remove(), 12000);
+      }
+    }
+
+    function burst(count = 48, symbols = ["✦", "♥", "✧", "🌹", "❀"]) {
+      for (let i = 0; i < count; i++) {
+        const item = document.createElement("span");
+        item.className = "particle";
+        item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        item.style.setProperty("--x", `${42 + Math.random() * 16}%`);
+        item.style.setProperty("--y", `${40 + Math.random() * 20}%`);
+        item.style.setProperty("--dx", `${Math.random() * 540 - 270}px`);
+        item.style.setProperty("--dy", `${Math.random() * 540 - 270}px`);
+        item.style.setProperty("--size", `${Math.random() * 18 + 12}px`);
+        item.style.setProperty("--duration", `${Math.random() * 1.3 + 1.1}s`);
+        item.style.setProperty("--spin", `${Math.random() * 540 - 270}deg`);
+        item.style.setProperty("--color", ["#ffd8eb", "#f4bdd4", "#e5d3ff", "#fff0cd"][i % 4]);
+        document.body.append(item);
+        window.setTimeout(() => item.remove(), 2600);
+      }
+    }
+
+    function renderBeginning() {
+      render(`
+        <p class="eyebrow">A little mystery, just for you</p>
+        <h1 class="name-glow">Hey Khushi Mishra… 👀</h1>
+        <p class="lead">Someone has a little surprise for you.</p>
+        <div class="button-row"><button class="button primary" data-action="open">Open your surprise ✨</button></div>
+      `, { scene: "beginning" });
+    }
+
+    function renderSuspense() {
+      render(`
+        <p class="eyebrow">Psst… one tiny thing first</p>
+        <h2>Okay Khushi, before you continue…</h2>
+        <p class="lead">I need you to answer one tiny question.</p>
+        <div class="button-row"><button class="button primary" data-action="shake">What question? 🤨</button></div>
+      `, { scene: "suspense" });
+    }
+
+    function revealReady() {
+      sceneElement.classList.add("shake");
+      burst(18, ["✧", "♡", "✦"]);
+      window.setTimeout(() => {
+        render(`
+          <p class="eyebrow">You have excellent curiosity</p>
+          <h2>Are you ready for a little plot twist? 💗</h2>
+          <p class="lead">Just a few tiny truths, wrapped up with a little sparkle.</p>
+          <div class="button-row"><button class="button primary" data-action="twists">I'm curious now 👀</button></div>
+        `, { scene: "suspense", announce: "Are you ready for a little plot twist?" });
+      }, 450);
+    }
+
+    function renderTwist() {
+      const n = twist + 1;
+      render(`
+        <p class="eyebrow">A small truth, revealed ${n} of 4</p>
+        <span class="twist-number" aria-hidden="true">${n}</span>
+        <p class="lead" id="twist-copy"></p>
+        <div class="button-row"><button class="button primary" data-action="next-twist">${n === 4 ? "One last little thing… 💌" : "Tell me another ✨"}</button></div>
+      `, { scene: "twists" });
+      typeText(document.getElementById("twist-copy"), `Plot twist #${n}: ${twists[twist]}`);
+      burst(twist === 3 ? 32 : 15, twist % 2 ? ["✦", "💗", "🌷"] : ["✧", "♡", "✨"]);
+    }
+
+    function typeText(element, text) {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion) {
+        element.textContent = text;
+        return;
+      }
+      let index = 0;
+      const tick = () => {
+        if (!element.isConnected) return;
+        element.textContent = text.slice(0, index);
+        index += 1;
+        if (index <= text.length) window.setTimeout(tick, 28);
+      };
+      tick();
+    }
+
+    function renderLetter(closed = true) {
+      if (closed) {
+        render(`
+          <p class="eyebrow">A little something from the heart</p>
+          <h2>Khushi Mishra, a little message awaits you 💌</h2>
+            <div class="envelope" aria-hidden="true"><span>✉</span></div>
+          <div class="button-row"><button class="button primary" data-action="open-letter">Open the letter</button></div>
+        `, { scene: "letter" });
+        return;
+      }
+      render(`
+        <p class="eyebrow">Written just for you</p>
+        <div class="letter opened">
+          <p>Hey Khushi,</p>
+          <p>I wanted to do something a little different instead of just asking you normally. So I made this tiny corner of the internet just for you. I don't know what your answer will be, but I'd really love to spend some time with you and make a beautiful memory together. ❤️</p>
+          <p class="letter-sign">With a little courage,</p>
+        </div>
+        <div class="button-row"><button class="button primary" data-action="build-up">There's more?! 🥹</button></div>
+      `, { scene: "letter", announce: "A handwritten-style message, made just for you." });
+      burst(22, ["♡", "✧", "🌹"]);
+    }
+
+    function renderBuildUp() {
+      render(`
+        <p class="eyebrow">Picture this for a second</p>
+        <div class="moon" aria-hidden="true"></div>
+        <div class="story-line">Imagine a beautiful evening… 🌙</div>
+        <div class="story-line" style="animation-delay:.75s">Good food, silly conversations, lots of laughter… ☕</div>
+        <div class="story-line" style="animation-delay:1.5s">And two people getting to know each other a little better. ✨</div>
+        <p class="lead" style="margin-top:28px">Sounds nice, doesn't it? 👀</p>
+        <div class="button-row"><button class="button primary" data-action="question">Get to the point already 😂</button></div>
+      `, { scene: "build-up", hearts: 13, announce: "Imagine a beautiful evening, good food, laughter, and two people getting to know each other." });
+    }
+
+    function renderQuestion() {
+      render(`
+        <p class="eyebrow cinematic-line">The moment we've been building up to</p>
+        <p class="lead cinematic-line delay-one" style="margin-bottom:8px">Khushi Mishra… ❤️</p>
+        <p class="lead cinematic-line delay-two" style="margin-bottom:0">I have one very important question for you…</p>
+        <h1 class="cinematic-line delay-three">Will you go on a date with me? 🥹💖</h1>
+        <div class="button-row question-buttons">
+          <button class="button primary yes" data-action="yes" disabled>YES! 💗</button>
+          <button class="button" data-action="more" disabled>I'd like to know more 😊</button>
+        </div>
+      `, { scene: "question", className: "question-screen", hearts: 24, heartSymbols: ["♡", "♥", "✧", "🌷", "🌹"], announce: "Khushi Mishra, will you go on a date with me?" });
+    }
+
+    function renderYes() {
+      render(`
+        <p class="eyebrow">The stars are celebrating, too</p>
+        <h1 class="celebrate-title">WAIT… this is just the beginning! 🎉</h1>
+        <p class="lead">It's a date! 🥹💖</p>
+        <p class="lead">Thank you for making someone's day. Here's to good food, silly stories, and a lovely memory together. 🌙</p>
+        <div class="button-row"><button class="button" data-action="restart">Replay our little adventure ✨</button></div>
+      `, { scene: "question", className: "question-screen", hearts: 36, announce: "It's a date! Thank you for making someone's day." });
+      burst(100, ["✦", "♥", "✧", "🌹", "❀", "💖"]);
+      startFireworks();
+    }
+
+    function renderMore() {
+      render(`
+        <p class="eyebrow">No pressure, just possibilities</p>
+        <h2>Here's the little daydream… 🌷</h2>
+        <p class="lead">A relaxed first date, somewhere we can actually hear each other talk. Pick the kind of evening that sounds most like you:</p>
+        <div class="button-row" role="group" aria-label="Choose a date idea">
+          <button class="button choice" data-choice="coffee" aria-pressed="false">Coffee & a cozy chat ☕</button>
+          <button class="button choice" data-choice="walk" aria-pressed="false">A sunset stroll 🌇</button>
+          <button class="button choice" data-choice="dinner" aria-pressed="false">Dinner & dessert 🍰</button>
+          <button class="button choice" data-choice="surprise" aria-pressed="false">Surprise me ✨</button>
+        </div>
+        <p class="choice-note" id="choice-note" aria-live="polite">No plans are set in stone—this is just a little daydream.</p>
+        <div class="button-row"><button class="button primary" data-action="ask-again">Okay, ask me again 🥹</button></div>
+        <p class="lead" style="font-size:.94rem; margin-top:24px; margin-bottom:0">Whatever you decide, your answer is completely yours. 💗</p>
+      `, { scene: "question", className: "question-screen", hearts: 10 });
+    }
+
+    function startFireworks() {
+      const timer = window.setInterval(() => {
+        if (scene !== "question" || !sceneElement.querySelector(".celebrate-title")) {
+          window.clearInterval(timer);
+          return;
+        }
+        burst(24, ["✦", "✧", "❀", "♥"]);
+      }, 900);
+      window.setTimeout(() => window.clearInterval(timer), 5400);
+    }
+
+    function playNote(frequency = 440) {
+      if (!soundOn || !audioContext) return;
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(.0001, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.025, audioContext.currentTime + .15);
+      gain.gain.exponentialRampToValueAtTime(.0001, audioContext.currentTime + 1.2);
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 1.25);
+    }
+
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      const action = button.dataset.action;
+      if (action === "open") {
+        burst(35);
+        hearts(20);
+        window.setTimeout(renderSuspense, 250);
+      } else if (action === "shake") {
+        revealReady();
+      } else if (action === "twists") {
+        twist = 0;
+        renderTwist();
+      } else if (action === "next-twist") {
+        twist += 1;
+        if (twist < twists.length) renderTwist();
+        else renderLetter();
+      } else if (action === "open-letter") {
+        renderLetter(false);
+      } else if (action === "build-up") {
+        renderBuildUp();
+      } else if (action === "question" || action === "ask-again") {
+        renderQuestion();
+      } else if (action === "yes") {
+        renderYes();
+      } else if (action === "more") {
+        renderMore();
+      } else if (action === "restart") {
+        twist = 0;
+        renderBeginning();
+      }
+
+      if (button.dataset.choice) {
+        document.querySelectorAll(".choice").forEach((choice) => {
+          const selected = choice === button;
+          choice.classList.toggle("selected", selected);
+          choice.setAttribute("aria-pressed", String(selected));
+        });
+        const messages = {
+          coffee: "Coffee and a cozy chat it is ☕ (Just a daydream until you both decide!)",
+          walk: "A sunset stroll sounds lovely 🌇 (Just a daydream until you both decide!)",
+          dinner: "Dinner and dessert—excellent taste 🍰 (Just a daydream until you both decide!)",
+          surprise: "A little surprise date—mysterious and magical ✨ (Just a daydream until you both decide!)"
+        };
+        document.getElementById("choice-note").textContent = messages[button.dataset.choice];
+      }
+    });
+
+    sceneElement.addEventListener("animationend", (event) => {
+      if (event.target.classList.contains("question-buttons")) {
+        event.target.querySelectorAll("button").forEach((button) => { button.disabled = false; });
+      }
+    });
+
+    document.getElementById("sound-toggle").addEventListener("click", async (event) => {
+      soundOn = !soundOn;
+      const button = event.currentTarget;
+      button.textContent = soundOn ? "♫ Sound on" : "♫ Sound off";
+      button.setAttribute("aria-pressed", String(soundOn));
+      if (soundOn) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          soundOn = false;
+          button.textContent = "♫ Sound unavailable";
+          button.setAttribute("aria-pressed", "false");
+          return;
+        }
+        audioContext = audioContext || new AudioContextClass();
+        await audioContext.resume();
+        const notes = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46];
+        let index = 0;
+        window.clearInterval(melodyTimer);
+        melodyTimer = window.setInterval(() => {
+          if (!soundOn) return;
+          playNote(notes[index % notes.length]);
+          index += 1;
+        }, 780);
+        playNote(notes[0]);
+      } else {
+        window.clearInterval(melodyTimer);
+      }
+    });
+
+    makeStars();
+    renderBeginning();
+  </script>
+</body>
+</html>
